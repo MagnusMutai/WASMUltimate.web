@@ -1,26 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WASMUltimate.server.Models;
 using WASMUltra.Shared;
+namespace WASMUltimate.api.Models;
 
-namespace WASMUltimate.server.Models
+public class DepartmentRepository : IDepartmentRepository
 {
-    public class DepartmentRepository : IDepartmentRepository
+    private readonly AppDbContext appDbContext;
+
+    public DepartmentRepository(AppDbContext appDbContext)
     {
-        private readonly AppDbContext appDbContext;
+        this.appDbContext = appDbContext;
+    }
+    public async Task<Department> GetDepartment(int departmentId)
+    {
+        return await appDbContext.Departments
+                .FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
+    }
 
-        public DepartmentRepository(AppDbContext appDbContext)
-        {
-            this.appDbContext = appDbContext;
-        }
-        public async Task<Department> GetDepartment(int departmentId)
-        {
-            return await appDbContext.Departments
-                    .FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
-        }
+    public async Task<IEnumerable<Department>> GetDepartments()
+    {
+        return await appDbContext.Departments.ToListAsync();
 
-        public async Task<IEnumerable<Department>> GetDepartments()
-        {
-            return await appDbContext.Departments.ToListAsync();
-
-        }
     }
 }
