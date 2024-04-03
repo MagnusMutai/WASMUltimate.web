@@ -45,7 +45,7 @@ public class EmployeesController : ControllerBase
         {
             return Ok(await employeeRepository.GetEmployees());
         }
-        catch (Exception)
+        catch (Exception ex)
         {
 
             return StatusCode(StatusCodes.Status500InternalServerError,
