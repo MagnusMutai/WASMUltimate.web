@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using WASMUltimate.shared;
 using WASMUltra.Shared;
 
 namespace WASMUltimate.web.Services
@@ -31,9 +32,9 @@ namespace WASMUltimate.web.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<EmployeeDataResult> GetEmployees(int skip, int take)
         {
-            return await httpClient.GetFromJsonAsync<IEnumerable<Employee>>("api/employees");
+            return await httpClient.GetFromJsonAsync<EmployeeDataResult>($"api/employees?skip={skip}&take={take}");
         }
 
         public Task<IEnumerable<Employee>> Search(string name, Gender? gender)
