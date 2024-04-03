@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WASMUltimate.api.Models;
 using WASMUltimate.server.Models;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(policy =>
+               policy.WithOrigins("http://localhost:7230", "https://localhost:7230")
+               .AllowAnyMethod()
+               .WithHeaders(HeaderNames.ContentType)
+               );
 
 app.UseHttpsRedirection();
 
