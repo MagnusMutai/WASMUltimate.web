@@ -2,6 +2,7 @@
 using WASMUltimate.server.Models;
 using WASMUltimate.shared;
 using WASMUltra.Shared;
+using System.Linq.Dynamic.Core;
 
 namespace WASMUltimate.api.Models;
 
@@ -36,6 +37,11 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 
+    public async Task<IEnumerable<Employee>> GetAllEmployees()
+    {
+        return await appDbContext.Employees.ToListAsync();
+    }
+
     public async Task<Employee> GetEmployee(int employeeId)
     {
         return await appDbContext.Employees
@@ -49,12 +55,12 @@ public class EmployeeRepository : IEmployeeRepository
                 .FirstOrDefaultAsync(e => e.Email == email);
     }
 
-    public async Task<EmployeeDataResult> GetEmployees(int skip = 0, int take = 5)
+    public async Task<EmployeeDataResult> GetEmployees(int skip = 0, int take = 5, string orderBy = "EmlployeeId")
     {
 
         EmployeeDataResult result = new EmployeeDataResult()
         {
-            Employees = appDbContext.Employees.Skip(skip).Take(take),
+            Employees = appDbContext.Employees.OrderBy(orderBy).Skip(skip).Take(take),
             Count = await appDbContext.Employees.CountAsync()
         
         };

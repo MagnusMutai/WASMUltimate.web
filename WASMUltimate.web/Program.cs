@@ -8,6 +8,7 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddHttpClient<IEmployeeService, EmployeeService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7159");
