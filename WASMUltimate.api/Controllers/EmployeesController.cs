@@ -18,6 +18,24 @@ public class EmployeesController : ControllerBase
         this.employeeRepository = employeeRepository; 
     }
 
+
+    [HttpGet("all")]
+    public async Task<ActionResult> GetAllEmployees()
+    {
+
+        try
+        {
+            return Ok(await employeeRepository.GetAllEmployees());
+        }
+        catch (Exception ex)
+        {
+
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                "Error retrieving data from the database");
+        }
+
+    }
+
     [HttpGet("{search}")]
     public async Task<ActionResult<IEnumerable<Employee>>> Search(string? name , Gender? gender)
     {
@@ -38,12 +56,12 @@ public class EmployeesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetEmployees(int skip = 0, int take = 5)
+    public async Task<ActionResult> GetEmployees(int skip = 0, int take = 5, string orderBy = "EmployeeId")
     {
 
         try
         {
-            return Ok(await employeeRepository.GetEmployees(skip, take));
+            return Ok(await employeeRepository.GetEmployees(skip, take, orderBy));
         }
         catch (Exception ex)
         {

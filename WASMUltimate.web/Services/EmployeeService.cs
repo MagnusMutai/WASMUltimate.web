@@ -22,6 +22,11 @@ namespace WASMUltimate.web.Services
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
+        {
+            return await httpClient.GetFromJsonAsync<IEnumerable<Employee>>($"api/employees/all");
+        }
+
         public Task<Employee> GetEmployee(int employeeId)
         {
             throw new NotImplementedException();
@@ -32,9 +37,9 @@ namespace WASMUltimate.web.Services
             throw new NotImplementedException();
         }
 
-        public async Task<EmployeeDataResult> GetEmployees(int skip, int take)
+        public async Task<EmployeeDataResult> GetEmployees(int skip, int take, string orderBy)
         {
-            return await httpClient.GetFromJsonAsync<EmployeeDataResult>($"api/employees?skip={skip}&take={take}");
+            return await httpClient.GetFromJsonAsync<EmployeeDataResult>($"api/employees?skip={skip}&take={take}&orderBy={orderBy}");
         }
 
         public Task<IEnumerable<Employee>> Search(string name, Gender? gender)
