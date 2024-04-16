@@ -1,6 +1,6 @@
 ﻿@page "/all"
 @using WASMUltimate.web.Services
-<div style="width:1100px">
+<div style="width:600px">
 
 @*     @{
         var initialGrouping = (new string[] { "Gender", "FirstName" });
@@ -15,16 +15,29 @@
              }
         </CaptionTemplate>
     </GridGroupSettings> *@
-    <GridFilterSettings Mode="FilterBarMode.Immediate" ImmediateModeDelay="10">
+    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu" Mode="FilterBarMode.Immediate" ImmediateModeDelay="10">
 @*         <GridFilterColumns>
             <GridFilterColumn Field="EmployeeId" Value="10" Operator="Operator.Equal"></GridFilterColumn>
         </GridFilterColumns> *@
     </GridFilterSettings>
   
     <GridColumns>
-        <GridColumn FilterSettings="@(new FilterSettings() { Operator = Operator.LessThanOrEqual })" Field="@nameof(Employee.EmployeeId)" HeaderText="ID"></GridColumn>
+        <GridColumn FilterSettings="@(new FilterSettings() { Operator = Operator.LessThanOrEqual, Type = Syncfusion.Blazor.Grids.FilterType.CheckBox })" Field="@nameof(Employee.EmployeeId)" HeaderText="ID">
+            <FilterItemTemplate>
+                    @{
+                        var filterContext = (context as FilterItemTemplateContext);
+                        var filterValue = filterContext.Value;
+
+                        if((Convert.ToInt32(filterValue)) <= 9)
+                        {
+                            filterValue = "0" + filterValue;
+                        }
+                        @filterValue
+                    }
+            </FilterItemTemplate>
+        </GridColumn>
         <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name"></GridColumn>
-        <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name" FilterSettings="@(new FilterSettings() {Type=Syncfusion.Blazor.Grids.FilterType.Excel})" ></GridColumn>
         <GridColumn Format="d" Field="@nameof(Employee.DateOfBirth)" HeaderText="Date of Birth"></GridColumn>
         <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender">
             <FilterTemplate>
@@ -34,7 +47,7 @@
                 </SfDropDownList>
             </FilterTemplate>
         </GridColumn>       
-        <GridColumn Field="@nameof(Employee.Email)" HeaderText="Email"></GridColumn>
+        <GridColumn AllowFiltering="false" Field="@nameof(Employee.Email)" HeaderText="Email"></GridColumn>
     </GridColumns>
 </SfGrid>
 </div>
