@@ -20,6 +20,6 @@ builder.Services.AddHttpClient<IDepartmentService, DepartmentService>(client =>
     client.BaseAddress = new Uri("https://localhost:7159");
 });
 
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NHaF5cWWdCf1FpRmJGdld5fUVHYVZUTXxaS00DNHVRdkdnWXtfd3RRQ2lcU0N1V0E=");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzIzOTM3NEAzMjM1MmUzMDJlMzBiQ1Q5ZS9URExDR3pLR29RVXlXdmV6b1JrR29razMrNFdKQjVIeVlOMkJVPQ==");
 
 await builder.Build().RunAsync();
