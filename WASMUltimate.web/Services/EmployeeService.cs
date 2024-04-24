@@ -51,7 +51,7 @@ namespace WASMUltimate.web.Services
 
         public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            var response = await httpClient.PutAsJsonAsync<Employee>($"api/employee/{employee.EmployeeId}", employee);
+            var response = await httpClient.PutAsJsonAsync<Employee>($"api/employees/{employee.EmployeeId}", employee);
             return await response.Content.ReadFromJsonAsync<Employee>();
         }
     }
