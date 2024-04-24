@@ -16,9 +16,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.2.24128.5" />
-    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="23.2.7" />
-    <PackageReference Include="Syncfusion.Blazor.Grid" Version="23.2.7" />
-    <PackageReference Include="Syncfusion.Blazor.Themes" Version="23.2.7" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="25.1.41" />
+    <PackageReference Include="Syncfusion.Blazor.Grid" Version="25.1.41" />
+    <PackageReference Include="Syncfusion.Blazor.Themes" Version="25.1.41" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,14 +12,16 @@ namespace WASMUltimate.web.Services
         {
             this.httpClient = httpClient;
         }
-        public Task<Employee> AddEmployee(Employee employee)
+        public async Task<Employee> AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
+            return await response.Content.ReadFromJsonAsync<Employee>();
+
         }
 
-        public Task DeleteEmployee(int employeeId)
+        public async Task DeleteEmployee(int employeeId)
         {
-            throw new NotImplementedException();
+            await httpClient.DeleteAsync($"api/employees/{employeeId}");
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
@@ -47,9 +49,10 @@ namespace WASMUltimate.web.Services
             throw new NotImplementedException();
         }
 
-        public Task<Employee> UpdateEmployee(Employee employee)
+        public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.PutAsJsonAsync<Employee>($"api/employee/{employee.EmployeeId}", employee);
+            return await response.Content.ReadFromJsonAsync<Employee>();
         }
     }
 }
