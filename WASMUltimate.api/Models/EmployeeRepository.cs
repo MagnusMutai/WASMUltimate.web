@@ -9,16 +9,27 @@ namespace WASMUltimate.api.Models;
 public class EmployeeRepository : IEmployeeRepository
 {
     private readonly AppDbContext appDbContext;
+    private readonly IDepartmentRepository departmentRepository;
 
-    public EmployeeRepository(AppDbContext appDbContext)
+    public EmployeeRepository(AppDbContext appDbContext, IDepartmentRepository departmentRepository)
     {
         this.appDbContext = appDbContext;
+        this.departmentRepository = departmentRepository;
     }
     public async Task<Employee> AddEmployee(Employee employee)
     {
-        if (employee.Department != null)
+        if (employee.DepartmentId == 0)
         {
-            appDbContext.Entry(employee.Department).State = EntityState.Unchanged;
+            throw new Exception("Employee DepartmentId cannot be zero");
+        }
+        else
+        {
+            Department department = await departmentRepository.GetDepartment(employee.DepartmentId);
+            if(department == null)
+            {
+                throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
+            }
+            employee.Department = department;
         }
 
         var result = await appDbContext.Employees.AddAsync(employee);
