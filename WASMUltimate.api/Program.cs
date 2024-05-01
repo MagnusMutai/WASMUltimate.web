@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using WASMUltimate.api.Models;
-using WASMUltimate.server.Models;
 using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WASMUltimate.server.Models;
 using WASMUltimate.shared;
 using WASMUltra.Shared;
 using System.Linq.Dynamic.Core;
@@ -15,6 +14,10 @@ public class EmployeeRepository : IEmployeeRepository
     {
         this.appDbContext = appDbContext;
         this.departmentRepository = departmentRepository;
+    }
+    public async Task<IEnumerable<Employee>> GetAllEmployees()
+    {
+        return await appDbContext.Employees.Include(e => e.Department).ToListAsync();
     }
     public async Task<Employee> AddEmployee(Employee employee)
     {
@@ -48,10 +51,6 @@ public class EmployeeRepository : IEmployeeRepository
         }
     }
 
-    public async Task<IEnumerable<Employee>> GetAllEmployees()
-    {
-        return await appDbContext.Employees.Include(e => e.Department).ToListAsync();
-    }
 
     public async Task<Employee> GetEmployee(int employeeId)
     {

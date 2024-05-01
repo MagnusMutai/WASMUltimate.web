@@ -12,7 +12,7 @@
             <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth"></GridColumn>
         <GridColumn Field="Department.DepartmentName" HeaderText="Department" Width="140px">
             <EditTemplate>
-                <SfDropDownList DataSource="@Departments" TItem="Department" TValue="int"
+                <SfDropDownList TItem="Department" TValue="int" DataSource="@Departments"
                                 @bind-Value="@((context as Employee).DepartmentId)">
                     <DropDownListFieldSettings Text="DepartmentName" Value="DepartmentId">
                     </DropDownListFieldSettings>
@@ -65,12 +65,14 @@
             else
             {
                 await EmployeeService.UpdateEmployee(Args.Data);
+                Employees = (await EmployeeService.GetAllEmployees()).ToList();
+                employeeGrid.Refresh();
             }
         }
-
         if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
         {
             await EmployeeService.DeleteEmployee(Args.Data.EmployeeId);
         }
     }
+
 }

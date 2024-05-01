@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using WASMUltimate.api.Models;
-using WASMUltimate.server.Models;
 using WASMUltra.Shared;
 
 namespace WASMUltimate.api.Controllers;
@@ -105,7 +104,8 @@ public class EmployeesController : ControllerBase
                 return BadRequest();
 
             var emp = await employeeRepository.GetEmployeeByEmail(employee.Email);
-            if(emp != null)
+
+            if (emp != null)
             {
                 ModelState.AddModelError("Email", "Employee email already in use");
                 return BadRequest(ModelState);
@@ -114,15 +114,13 @@ public class EmployeesController : ControllerBase
             var createdEmployee = await employeeRepository.AddEmployee(employee);
 
             return CreatedAtAction(nameof(GetEmployee),
-                new {id = createdEmployee.EmployeeId}, createdEmployee);
+                new { id = createdEmployee.EmployeeId }, createdEmployee);
         }
         catch (Exception ex)
         {
-
             return StatusCode(StatusCodes.Status500InternalServerError,
-                "Error creating new employee");
+                "Error creating new employee record");
         }
-        
     }
 
     [HttpPut("{id:int}")]

@@ -1,10 +1,9 @@
 ﻿using WASMUltra.Shared;
 
-namespace WASMUltimate.server.Models
+namespace WASMUltimate.api.Models;
+
+public interface IDepartmentRepository
 {
-    public interface IDepartmentRepository
-    {
-        Task<IEnumerable<Department>> GetDepartments();
-        Task<Department> GetDepartment(int departmentId);
-    }
+    Task<IEnumerable<Department>> GetDepartments();
+    Task<Department> GetDepartment(int departmentId);
 }
