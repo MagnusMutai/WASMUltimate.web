@@ -21,25 +21,28 @@ public class EmployeeRepository : IEmployeeRepository
     }
     public async Task<Employee> AddEmployee(Employee employee)
     {
-        if (employee.DepartmentId == 0)
-        {
-            throw new Exception("Employee DepartmentId cannot be zero");
-        }
-        else
-        {
+        //if (employee.DepartmentId == 0)
+        //{
+        //    throw new Exception("Employee DepartmentId cannot be zero");
+        //}
+        //else
             Department department = await departmentRepository.GetDepartment(employee.DepartmentId);
-            if(department == null)
+            if (department == null)
             {
                 throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
             }
             employee.Department = department;
-        }
+
+        //if (employee.Department != null)
+        //{
+        //    appDbContext.Entry(employee.Department).State = EntityState.Unchanged;
+        //}
+
 
         var result = await appDbContext.Employees.AddAsync(employee);
         await appDbContext.SaveChangesAsync();
         return result.Entity;
     }
-
     public async Task DeleteEmployee(int employeeId)
     {
         var result = await appDbContext.Employees
