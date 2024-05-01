@@ -10,15 +10,15 @@
             <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name"></GridColumn>
             <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name"></GridColumn>
             <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth"></GridColumn>
-        <GridColumn Field="Department.DepartmentName" HeaderText="Department" Width="140px">
+        <GridForeignColumn HeaderText="Department" TValue="Department" Field="@nameof(Employee.DepartmentId)" ForeignDataSource="@Departments" ForeignKeyValue="DepartmentName" Width="140px">
             <EditTemplate>
                 <SfDropDownList TItem="Department" TValue="int" DataSource="@Departments"
-                                @bind-Value="@((context as Employee).DepartmentId)">
+                                @bind-Value="@((context as Employee).DepartmentId)" ID="DepartmentId">
                     <DropDownListFieldSettings Text="DepartmentName" Value="DepartmentId">
                     </DropDownListFieldSettings>
                 </SfDropDownList>
             </EditTemplate>
-        </GridColumn>
+        </GridForeignColumn>
             <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender" Width="140px">
 
                 <EditTemplate>
