@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WASMUltimate.server.Models;
 using WASMUltra.Shared;
 namespace WASMUltimate.api.Models;
 

@@ -14,6 +14,7 @@ namespace WASMUltimate.web.Services
         }
         public async Task<Employee> AddEmployee(Employee employee)
         {
+
             var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
             return await response.Content.ReadFromJsonAsync<Employee>();
 

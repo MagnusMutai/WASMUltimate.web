@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WASMUltimate.server.Models;
+using WASMUltimate.api.Models;
 using WASMUltra.Shared;
 
 namespace WASMUltimate.api.Controllers
