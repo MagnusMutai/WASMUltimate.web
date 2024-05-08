@@ -3,20 +3,27 @@ using WASMUltimate.shared;
 using WASMUltra.Shared;
 
 namespace WASMUltimate.web.Services;
-public class EmployeeService : IEmployeeService
+public class EmployeeService(HttpClient httpClient) : IEmployeeService
 {
-    private readonly HttpClient httpClient;
+    private readonly HttpClient httpClient = httpClient;
+    //private readonly AppDbContext appDbContext = appDbContext;
 
-    public EmployeeService(HttpClient httpClient)
-    {
-        this.httpClient = httpClient;
-    }
     public async Task<Employee> AddEmployee(Employee employee)
     {
-
         var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();
+        //try
+        //{
 
+        //var response = await this.appDbContext.Employees.AddAsync(employee);
+        //await this.appDbContext.SaveChangesAsync();
+        //return result.Entity;
+
+        //}
+        //catch
+        //{
+        //    throw;
+        //}
     }
 
     public async Task DeleteEmployee(int employeeId)
