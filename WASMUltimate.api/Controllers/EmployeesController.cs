@@ -100,6 +100,8 @@ public class EmployeesController : ControllerBase
     {
         try
         {
+            //employee.Department.DepartmentName = "";
+
             if (employee == null)
                 return BadRequest();
 
