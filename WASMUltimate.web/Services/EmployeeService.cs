@@ -10,23 +10,30 @@ public class EmployeeService(HttpClient httpClient) : IEmployeeService
 
     public async Task<Employee> AddEmployee(Employee employee)
     {
-        new Employee()
-        {
-            EmployeeId
-            FirstName
-            LastName
-            Email
-            DateOfBirth
-            Gender
-            DepartmentId
-            PhotoPath
-            Department
-    employee.Department.DepartmentName = "";
+    //    Employee emp = new Employee()
+    //    {
+    //        EmployeeId = employee.EmployeeId,
+    //        FirstName = employee.FirstName,
+    //        LastName = employee.LastName,
+    //        Email = employee.Email,
+    //        DateOfBirth = employee.DateOfBirth,
+    //        Gender = employee.Gender,
+    //        DepartmentId = employee.DepartmentId,
+    //        PhotoPath = employee.PhotoPath,
+    //        Department = new Department() { DepartmentId = 0, DepartmentName = "" }
 
-        };
+    //};
 
-        var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
+    HttpResponseMessage response = await httpClient.PostAsJsonAsync(
+              "api/employees", employee);
+        response.EnsureSuccessStatusCode();
+
+        // return URI of the created resource.
+        //return response.Headers.Location;
         return await response.Content.ReadFromJsonAsync<Employee>();
+
+        //var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", emp);
+        //return await response.Content.ReadFromJsonAsync<Employee>();
         //try
         //{
 
