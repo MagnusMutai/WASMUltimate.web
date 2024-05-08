@@ -10,6 +10,21 @@ public class EmployeeService(HttpClient httpClient) : IEmployeeService
 
     public async Task<Employee> AddEmployee(Employee employee)
     {
+        new Employee()
+        {
+            EmployeeId
+            FirstName
+            LastName
+            Email
+            DateOfBirth
+            Gender
+            DepartmentId
+            PhotoPath
+            Department
+    employee.Department.DepartmentName = "";
+
+        };
+
         var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();
         //try
