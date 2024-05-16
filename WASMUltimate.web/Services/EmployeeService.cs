@@ -1,52 +1,29 @@
 ﻿using System.Net.Http.Json;
 using WASMUltimate.shared;
 using WASMUltra.Shared;
-
 namespace WASMUltimate.web.Services;
-public class EmployeeService(HttpClient httpClient) : IEmployeeService
+public class EmployeeService(HttpClient httpClient, IDepartmentService departmentService) : IEmployeeService
 {
     private readonly HttpClient httpClient = httpClient;
+    private readonly IDepartmentService departmentService = departmentService;
+
     //private readonly AppDbContext appDbContext = appDbContext;
 
     public async Task<Employee> AddEmployee(Employee employee)
     {
-    //    Employee emp = new Employee()
-    //    {
-    //        EmployeeId = employee.EmployeeId,
-    //        FirstName = employee.FirstName,
-    //        LastName = employee.LastName,
-    //        Email = employee.Email,
-    //        DateOfBirth = employee.DateOfBirth,
-    //        Gender = employee.Gender,
-    //        DepartmentId = employee.DepartmentId,
-    //        PhotoPath = employee.PhotoPath,
-    //        Department = new Department() { DepartmentId = 0, DepartmentName = "" }
+        Department department = await this.departmentService.GetDepartment(employee.DepartmentId);
+        if (department == null)
+        {
+            throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
+        }
+        employee.Department = department;
+        employee.DateOfBirth = new DateTime(01,01,2002);
 
-    //};
 
-    HttpResponseMessage response = await httpClient.PostAsJsonAsync(
-              "api/employees", employee);
-        response.EnsureSuccessStatusCode();
-
-        // return URI of the created resource.
-        //return response.Headers.Location;
+        var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();
-
-        //var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", emp);
-        //return await response.Content.ReadFromJsonAsync<Employee>();
-        //try
-        //{
-
-        //var response = await this.appDbContext.Employees.AddAsync(employee);
-        //await this.appDbContext.SaveChangesAsync();
-        //return result.Entity;
-
-        //}
-        //catch
-        //{
-        //    throw;
-        //}
     }
+
 
     public async Task DeleteEmployee(int employeeId)
     {
