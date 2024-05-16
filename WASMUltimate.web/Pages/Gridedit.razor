@@ -75,19 +75,16 @@
         foreach(Employee employee in updates)
         {
             await EmployeeService.UpdateEmployee(employee);
-            Employees = (await EmployeeService.GetAllEmployees()).ToList();
         }
 
         foreach (Employee employee in inserts)
         {
             await EmployeeService.AddEmployee(employee);
-            Employees = (await EmployeeService.GetAllEmployees()).ToList();
         }
 
         foreach (Employee employee in deletes)
         {
             await EmployeeService.DeleteEmployee(employee.EmployeeId );
-            Employees = (await EmployeeService.GetAllEmployees()).ToList();
         }
     } 
 
