@@ -2,7 +2,7 @@
 
 
 <SfGrid @ref="employeeGrid" DataSource="@Employees" AllowPaging="true" Toolbar="@(new List<string>() { "Add", "Edit", "Update", "Delete", "Cancel" })">
-        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Dialog">
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Batch">
             <HeaderTemplate>
                 <span>@GetHeaderText(context as Employee)</span>
             </HeaderTemplate>
@@ -18,7 +18,7 @@
             <GridColumn AllowAdding="false" IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" HeaderText="ID" Width="40px"></GridColumn>
             <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name"></GridColumn>
             <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name"></GridColumn>
-            <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth"></GridColumn>
+            <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth" Format="d"></GridColumn>
         <GridColumn Field="@nameof(Employee.DepartmentId)" HeaderText="Department" Width="140px">
             <Template>
                 <span>@GetDepartmentNameById((context as Employee).DepartmentId)</span>
@@ -68,8 +68,29 @@
 
     public async Task BatchSaveHandler(BeforeBatchSaveArgs<Employee> Args)
     {
-        
+        var updates = Args.BatchChanges.ChangedRecords;
+        var inserts = Args.BatchChanges.AddedRecords;
+        var deletes = Args.BatchChanges.DeletedRecords;
+
+        foreach(Employee employee in updates)
+        {
+            await EmployeeService.UpdateEmployee(employee);
+            Employees = (await EmployeeService.GetAllEmployees()).ToList();
+        }
+
+        foreach (Employee employee in inserts)
+        {
+            await EmployeeService.AddEmployee(employee);
+            Employees = (await EmployeeService.GetAllEmployees()).ToList();
+        }
+
+        foreach (Employee employee in deletes)
+        {
+            await EmployeeService.DeleteEmployee(employee.EmployeeId );
+            Employees = (await EmployeeService.GetAllEmployees()).ToList();
+        }
     } 
+
 
     public string GetDepartmentNameById(int id)
     {
