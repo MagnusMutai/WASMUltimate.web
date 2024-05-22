@@ -17,10 +17,6 @@ public class EmployeeService(HttpClient httpClient, IDepartmentService departmen
             throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
         }
         employee.Department = department;
-        string value = "01,01,2002";
-        var date = value.toISOString
-        employee.DateOfBirth = new Date(01,01,2002).toISOString;
-
 
         var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();

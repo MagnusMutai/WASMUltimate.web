@@ -2,7 +2,7 @@
 
 
 <SfGrid @ref="employeeGrid" DataSource="@Employees" AllowPaging="true" Toolbar="@(new List<string>() { "Add", "Edit", "Update", "Delete", "Cancel" })">
-        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Batch">
+        <GridEditSettings AllowNextRowEdit="true" AllowAdding="true" AllowEditing="true" AllowDeleting="true" Mode="EditMode.Batch">
             <HeaderTemplate>
                 <span>@GetHeaderText(context as Employee)</span>
             </HeaderTemplate>
