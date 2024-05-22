@@ -11,10 +11,10 @@ public class Employee
 {
     public int EmployeeId { get; set; }
 
-    [Required]
-    [MinLength(2, ErrorMessage = "FirstName must contain at least 2 characters")]
+    //[Required]
+    //[MinLength(2, ErrorMessage = "FirstName must contain at least 2 characters")]
     public string FirstName { get; set; }
-    [Required]
+    //[Required]
     public string LastName { get; set; }
     public string Email { get; set; }
     public DateTime DateOfBirth { get; set; }
