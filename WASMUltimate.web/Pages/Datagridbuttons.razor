@@ -25,13 +25,14 @@
 
 </div>
 
-@code{
+@code {
     public List<Employee> Employees { get; set; }
 
     public SfGrid<Employee> employeeGrid { get; set; }
 
     public string[] GenderEnumValues { get; set; } = Enum.GetNames(typeof(Gender));
 
+    [Inject]
     public IEmployeeService EmployeeService { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -43,7 +44,7 @@
     {
         if (args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
         {
-            if(args.Action == "Add")
+            if (args.Action == "Add")
             {
                 await EmployeeService.AddEmployee(args.Data);
             }

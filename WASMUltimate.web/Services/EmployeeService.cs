@@ -22,7 +22,6 @@ public class EmployeeService(HttpClient httpClient, IDepartmentService departmen
         return await response.Content.ReadFromJsonAsync<Employee>();
     }
 
-
     public async Task DeleteEmployee(int employeeId)
     {
         await httpClient.DeleteAsync($"api/employees/{employeeId}");
@@ -33,9 +32,10 @@ public class EmployeeService(HttpClient httpClient, IDepartmentService departmen
         return await httpClient.GetFromJsonAsync<IEnumerable<Employee>>($"api/employees/all");
     }
 
-    public Task<Employee> GetEmployee(int employeeId)
+    public async Task<Employee> GetEmployee(int employeeId)
     {
-        throw new NotImplementedException();
+        return await httpClient.GetFromJsonAsync<Employee>($"api/employees/{employeeId}");
+
     }
 
     public Task<Employee> GetEmployeeByEmail(string email)
