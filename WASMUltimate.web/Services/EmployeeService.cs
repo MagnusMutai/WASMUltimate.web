@@ -20,6 +20,7 @@ public class EmployeeService(HttpClient httpClient, IDepartmentService departmen
 
         var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();
+
     }
 
     public async Task DeleteEmployee(int employeeId)
