@@ -10,7 +10,7 @@
         <GridEvents CommandClicked="OnCommandClicked" OnActionBegin="ActionBeginHandler" TValue="Employee"> </GridEvents>
         <GridColumns>
             <GridColumn AllowAdding="false" IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" HeaderText="ID" Width="60px"></GridColumn>
-            <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name" ValidationRules="@(new ValidationRules() { Required = true })"></GridColumn>
+            <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name" ValidationRules="@(new ValidationRules() { Required = true, MinLength = 2    })"></GridColumn>
             <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name"></GridColumn>
             <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth"></GridColumn>
             <GridColumn Field="@nameof(Employee.Gender)" Format="d" HeaderText="Gender" Width="140px">
@@ -25,7 +25,7 @@
                     <GridCommandColumn Type="CommandButtonType.Edit" ButtonOption="@(new CommandButtonOptions() 
                     { IconCss = "e-icons e-edit", CssClass = "e-flat"})"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Delete" ButtonOption="@(new CommandButtonOptions()
-                    { IconCss = "e-icons e-delete", CssClass="e-flat"})"></GridCommandColumn>
+                    { IconCss = "e-icons e-delete", CssClass="e-flat"})"></GridCommandColumn>                                                                                         
                     <GridCommandColumn Type="CommandButtonType.Save" ButtonOption="@(new CommandButtonOptions()
                     { IconCss = "e-icons e-update", CssClass = "e-flat"})"></GridCommandColumn>
                     <GridCommandColumn Type="CommandButtonType.Cancel" ButtonOption="@(new CommandButtonOptions()
@@ -46,6 +46,7 @@
 </div>
 
 @code {
+
     public List<Employee> Employees { get; set; }
 
     public SfGrid<Employee> employeeGrid { get; set; }
