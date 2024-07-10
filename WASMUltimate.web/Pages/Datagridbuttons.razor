@@ -1,7 +1,7 @@
 ﻿@page "/"
 @* @page "/datagridbuttons.razor" *@
 
-<div style="width:750px">
+<div style="width:1500px">
 
     <SfGrid @ref="employeeGrid" DataSource="@Employees" AllowPaging="true" AllowSorting="true" AllowGrouping="true"
             Toolbar="@(new List<string>() {"Add", "Cancel"})">
@@ -10,9 +10,9 @@
         <GridEvents CommandClicked="OnCommandClicked" OnActionBegin="ActionBeginHandler" TValue="Employee"> </GridEvents>
         <GridColumns>
             <GridColumn AllowAdding="false" IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" HeaderText="ID" Width="60px"></GridColumn>
-            <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name" ValidationRules="@(new ValidationRules() { Required = true, MinLength = 2    })"></GridColumn>
-            <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name"></GridColumn>
-            <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date Of Birth"></GridColumn>
+            <GridColumn Field="@nameof(Employee.FirstName)" HeaderText="First Name" ValidationRules="@(new ValidationRules() { Required = true, MinLength = 2 })"></GridColumn>
+            <GridColumn Field="@nameof(Employee.LastName)" HeaderText="Last Name" ValidationRules="@(new ValidationRules() { Required = true, MinLength = 2})"></GridColumn>
+            <GridColumn Field="@nameof(Employee.DateOfBirth)" Format="d"></GridColumn>
             <GridColumn Field="@nameof(Employee.Gender)" Format="d" HeaderText="Gender" Width="140px">
                 <EditTemplate>
                     <SfDropDownList DataSource="@GenderEnumValues" TItem="string" TValue="Gender" @bind-Value="@((context as Employee).Gender)">
