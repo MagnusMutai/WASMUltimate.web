@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WASMUltimate.shared;
 
 namespace WASMUltra.Shared;
 
@@ -18,6 +19,7 @@ public class Employee
     //[Required]
     public string LastName { get; set; }
     [EmailAddress]
+    [AllowedEmailDomain("magnusq.com", ErrorMessage = "Invalid Email Domain")]
     public string Email { get; set; }
     [DisplayFormat(DataFormatString = "d")]
     [Display(Name = "  DOB")]
