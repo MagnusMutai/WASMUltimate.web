@@ -1,0 +1,72 @@
+﻿@page "/datagridcolumns"
+
+<SfGrid @ref="EmployeeGrid" DataSource="@Employees" AllowTextWrap="true" Toolbar="@(new List<string>() { "Add", "Edit", "Update", "Delete", "Cancel" })">
+   <GridEvents OnActionBegin="ActionBeginHandler" TValue="Employee"></GridEvents>
+    <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+    <GridColumns>
+
+        @foreach (var prop in typeof(Employee).GetProperties()) {
+            if(ColumnsToDisplay.Contains(prop.Name))
+            {
+                <GridColumn Field="@prop.Name" IsPrimaryKey="@(prop.Name == "EmployeeId")" AllowEditing="@EditableColumns.Contains(prop.Name)" ></GridColumn>
+            }
+        }
+        <GridColumn Field="@nameof(Employee.Gender)">
+            <EditTemplate>
+                <SfDropDownList ID="Gender" TItem="string" TValue="Gender" @bind-Value="(context as Employee).Gender" DataSource="@(Enum.GetNames(typeof(Gender)))">
+                </SfDropDownList>
+            </EditTemplate>
+        </GridColumn>
+        <GridForeignColumn Field="@nameof(Employee.DepartmentId)" HeaderText="Department" ForeignDataSource="Departments" ForeignKeyValue="DepartmentName"></GridForeignColumn>
+@*      <GridColumn Field="@nameof(Employee.EmployeeId)" TextAlign="TextAlign.Left" Width="60" HeaderText="Id"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Left" HeaderText="First Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Left" HeaderText="Last Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Email)" TextAlign="TextAlign.Left" HeaderText="Email"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" TextAlign="TextAlign.Left" HeaderText="DOB"></GridColumn> *@
+    </GridColumns>
+</SfGrid>
+
+@code {
+    public List<Employee> Employees { get; set; }
+
+    public List<Department> Departments { get; set; }
+
+    public List<string> ColumnsToDisplay = new List<string> {"EmployeeId", "FirstName", "LastName", "Email" };
+
+    public List<string> EditableColumns = new List<string> { "FirstName", "LastName" };
+
+    public SfGrid<Employee> EmployeeGrid { get; set; }
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    [Inject]
+    public IDepartmentService DepartmentService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+        Departments = (await DepartmentService.GetAllDepartments()).ToList();
+    }
+
+    public async void ActionBeginHandler (ActionEventArgs<Employee> Args)
+    {
+        if(Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if(Args.Action == "Add")
+            {
+                await EmployeeService.AddEmployee(Args.Data);
+                Employees = (await EmployeeService.GetAllEmployees()).ToList();
+                await EmployeeGrid.Refresh();
+            }
+            else
+            {
+                await EmployeeService.UpdateEmployee(Args.Data);
+            }
+        }
+        if(Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await EmployeeService.DeleteEmployee(Args.Data.EmployeeId);
+        }
+    }
+}
