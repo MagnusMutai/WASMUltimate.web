@@ -11,12 +11,12 @@ public class EmployeeService(HttpClient httpClient, IDepartmentService departmen
 
     public async Task<Employee> AddEmployee(Employee employee)
     {
-        Department department = await this.departmentService.GetDepartment(employee.DepartmentId);
-        if (department == null)
-        {
-            throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
-        }
-        employee.Department = department;
+        //Department department = await this.departmentService.GetDepartment(employee.DepartmentId);
+        //if (department == null)
+        //{
+        //    throw new Exception($"Invalid Employee DepartmentId {employee.DepartmentId}");
+        //}
+        //employee.Department = department;
 
         var response = await httpClient.PostAsJsonAsync<Employee>("api/employees", employee);
         return await response.Content.ReadFromJsonAsync<Employee>();
