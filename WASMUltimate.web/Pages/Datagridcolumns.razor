@@ -4,27 +4,43 @@
    <GridEvents OnActionBegin="ActionBeginHandler" TValue="Employee"></GridEvents>
     <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
     <GridColumns>
-
-        @foreach (var prop in typeof(Employee).GetProperties()) {
-            if(ColumnsToDisplay.Contains(prop.Name))
-            {
-                <GridColumn Field="@prop.Name" IsPrimaryKey="@(prop.Name == "EmployeeId")" AllowEditing="@EditableColumns.Contains(prop.Name)" ></GridColumn>
+    <GridColumn HeaderText="Photo" TextAlign="TextAlign.Center" Width="120">
+        <Template>
+            @{
+                var employee = (context as Employee);
+                <img class="thumbnail" src="@employee.PhotoPath" alt="Employee Photo" />
             }
-        }
+        </Template>
+    </GridColumn>
+
+         <GridColumn IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" TextAlign="TextAlign.Left" Width="60" HeaderText="Id"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Left" HeaderText="First Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Left" HeaderText="Last Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Email)" TextAlign="TextAlign.Left" HeaderText="Email"></GridColumn>
         <GridColumn Field="@nameof(Employee.Gender)">
+            <HeaderTemplate>
+                <div>
+                    Gender <img src="images/genderimage.png" alt="Gender Image" style="width: 20px; height: 20px;"/>
+                </div>
+            </HeaderTemplate>
+
             <EditTemplate>
                 <SfDropDownList ID="Gender" TItem="string" TValue="Gender" @bind-Value="(context as Employee).Gender" DataSource="@(Enum.GetNames(typeof(Gender)))">
                 </SfDropDownList>
             </EditTemplate>
         </GridColumn>
         <GridForeignColumn Field="@nameof(Employee.DepartmentId)" HeaderText="Department" ForeignDataSource="Departments" ForeignKeyValue="DepartmentName"></GridForeignColumn>
-@*      <GridColumn Field="@nameof(Employee.EmployeeId)" TextAlign="TextAlign.Left" Width="60" HeaderText="Id"></GridColumn>
-        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Left" HeaderText="First Name"></GridColumn>
-        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Left" HeaderText="Last Name"></GridColumn>
-        <GridColumn Field="@nameof(Employee.Email)" TextAlign="TextAlign.Left" HeaderText="Email"></GridColumn>
-        <GridColumn Field="@nameof(Employee.DateOfBirth)" TextAlign="TextAlign.Left" HeaderText="DOB"></GridColumn> *@
     </GridColumns>
 </SfGrid>
+
+
+<style>
+    .thumbnail {
+        height: 80px;
+        width: 80px;
+        border-radius: 40px;
+    }
+</style>
 
 @code {
     public List<Employee> Employees { get; set; }
