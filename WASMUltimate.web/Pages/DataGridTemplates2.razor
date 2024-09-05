@@ -1,0 +1,23 @@
+﻿@page "/datagridtemplates2"
+<SfGrid DataSource="@Employees" AllowTextWrap="true" Width="455">
+    <GridColumns>
+        <GridColumn IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" TextAlign="TextAlign.Left" Width="60" HeaderText="Id"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Left" HeaderText="First Name" Width="100"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Left" HeaderText="Last Name" Width="100"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" TextAlign="TextAlign.Left" HeaderText="Date of Birth" Width="110"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Email)" TextAlign="TextAlign.Left" HeaderText="Email" Width="130"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" TextAlign="TextAlign.Left" HeaderText="Email" Width="110"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+@code {
+    public List<Employee> Employees { get; set; }
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+}
