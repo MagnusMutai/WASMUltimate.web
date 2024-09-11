@@ -1,0 +1,119 @@
+﻿@page "/datagridcells" 
+<h3>DataGridCells</h3>
+<h4>Query cell info</h4>
+
+<SfGrid DataSource="@Employees" Width="450">
+    <GridEvents TValue="Employee" QueryCellInfo="@QueryCellInfoHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="130"
+        DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Row Databound</h4>
+<SfGrid DataSource="@Employees" Width="450">
+    <GridEvents TValue="Employee" RowDataBound="@RowDataBoundHandler"></GridEvents>
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="130"
+        DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Text wrap</h4>
+<SfGrid DataSource="@Employees" Width="350" AllowTextWrap="true">
+    <GridTextWrapSettings WrapMode="WrapMode.Header"></GridTextWrapSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText=" Employee First Name" Width="130"
+        DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Clip/Wrap text</h4>
+<SfGrid DataSource="@Employees" Width="350" ClipMode="ClipMode.EllipsisWithTooltip">
+    <GridTextWrapSettings WrapMode="WrapMode.Header"></GridTextWrapSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText=" Employee First Name" Width="130"
+        DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Grid Lines</h4>
+<SfGrid DataSource="@Employees" Width="350" AllowTextWrap="true" GridLines="GridLine.Both">
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="130"
+        DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="130"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<style>
+
+    .GreenClass {
+        background-color: green;
+    }
+
+    .RedClass {
+        background-color: red;
+    }
+
+    .YellowClass {
+        background-color: yellow;
+    }
+
+</style>
+
+@code {
+    public List<Employee> Employees { get; set; }
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+
+    private void QueryCellInfoHandler(QueryCellInfoEventArgs<Employee> args)
+    {
+        if(args.Column.Field == "FirstName")
+        {
+            if(args.Data.FirstName.StartsWith("G"))
+            {
+                args.Cell.AddClass(new string[] { "GreenClass" });
+            }
+            else if (args.Data.FirstName.StartsWith("R"))
+            {
+                args.Cell.AddClass(new string[] { "RedClass" });
+            }
+            else
+            {
+                args.Cell.AddClass(new string[] { "YellowClass" });
+            }
+        }
+    }
+
+    private void RowDataBoundHandler(RowDataBoundEventArgs<Employee> args)
+    {
+        if (args.Data.FirstName.StartsWith("G"))
+        {
+            args.Row.AddClass(new string[] { "GreenClass" });
+        }
+        else if (args.Data.FirstName.StartsWith("R"))
+        {
+            args.Row.AddClass(new string[] { "RedClass" });
+        }
+        else
+        {
+            args.Row.AddClass(new string[] { "YellowClass" });
+        }
+    }
+}
