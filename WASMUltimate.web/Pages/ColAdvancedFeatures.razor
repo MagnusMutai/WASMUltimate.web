@@ -1,0 +1,106 @@
+﻿@page "/coladvancedfeatures"
+
+<h3>DataGrid column advanced features</h3>
+
+<h4 class="mt-5">Column Chooser</h4>
+
+<div style="padding-bottom: 10px;">
+    <SfButton Content=" Toggle column chooser" OnClick="@OpenColumnChooser"></SfButton>
+</div>
+
+<SfGrid @ref="EmployeeGrid" DataSource="@Employees" Width="650" ShowColumnChooser="@ShowColChooser">
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="120"
+                    DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date of Birth" Width="120"></GridColumn>
+        <GridColumn ShowInColumnChooser="false" Field="Department.DepartmentName" HeaderText="Dept Name" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Reorder columns</h4>
+<div style="padding-bottom: 10px;">
+    <SfButton Content="Reorder first name and last name colunms" OnClick="@ReorderColumns"></SfButton>
+</div>
+<SfGrid @ref="EmpGrid" DataSource="@Employees" Width="650" AllowReordering="true">
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="120"
+                    DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date of Birth" Width="120"></GridColumn>
+        <GridColumn AllowReordering="false" Field="Department.DepartmentName" HeaderText="Dept Name" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<h4 class="mt-5">Resize columns</h4>
+<div style="padding-bottom: 10px;">
+    <SfButton Content="Reorder first name and last name colunms" OnClick="@ReorderColumns"></SfButton>
+</div>
+<SfGrid @ref="EmpGrid" DataSource="@Employees" Width="650" AllowReordering="true" AllowResizing="true">
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn MinWidth="200" MaxWidth="300" Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="120"
+                    DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date of Birth" Width="120"></GridColumn>
+        <GridColumn AllowResizing="false" Field="Department.DepartmentName" HeaderText="Dept Name" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<div style="margin-bottom:250px;">
+<h4 class="mt-5">Column menu</h4>
+<div style="padding-bottom: 10px;">
+    <SfButton Content="Reorder first name and last name colunms" OnClick="@ReorderColumns"></SfButton>
+</div>
+<SfGrid @ref="EmpGrid" DataSource="@Employees" Width="650" AllowReordering="true" AllowResizing="true" ShowColumnMenu="true" ColumnMenuItems="@MenuItems" AllowGrouping="true" AllowFiltering="true">
+    <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
+    @* <GridFilterSettings Type="Syncfusion.Blazor.DropDowns.FilterType.CheckBox"></GridFilterSettings> *@
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
+        <GridColumn MinWidth="200" MaxWidth="300" Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="120"
+                    DisableHtmlEncode="false"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" IsPrimaryKey="true" HeaderText="Last Name" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.Gender)" HeaderText="Gender" Width="120"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" HeaderText="Date of Birth" Width="120"></GridColumn>
+        <GridColumn AllowResizing="false" Field="Department.DepartmentName" HeaderText="Dept Name" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+</div>
+@code {
+    public List<Employee> Employees { get; set; }
+
+    public SfGrid<Employee> EmployeeGrid { get; set; }
+
+    public SfGrid<Employee> EmpGrid { get; set; }
+
+    public bool ShowColChooser { get; set; } = false;
+
+
+    [Inject]
+    public IEmployeeService EmployeeService { get; set; }
+
+    public string[] MenuItems = new string[]
+    {"AutoFit", "AutoFitAll", "Group", "Ungroup", "ColumnChooser", "Filter"};
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+
+    private async Task OpenColumnChooser()
+    {
+        ShowColChooser = !ShowColChooser;
+        await EmployeeGrid.OpenColumnChooserAsync(0, 0);
+    }
+
+    private async Task ReorderColumns()
+    {
+        // await EmpGrid.ReorderColumnAsync("FirstName", "LastName");
+        await EmpGrid.ReorderColumnsAsync(new string[] { "FirstName", "LastName" }, "Gender");
+    }
+}
