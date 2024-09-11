@@ -1,17 +1,112 @@
 ﻿@page "/datagridtemplates2"
+
+<h3 class="mb-1"> Row Template</h3>
 <SfGrid DataSource="@Employees" AllowTextWrap="true" Width="455">
+    <GridTemplates>
+        <RowTemplate>
+            @{
+                var employee = context as Employee;
+                <td style="border-bottom: 1px solid #DEE2E6; text-align: center;">
+                    <table width="100%" cellpadding="5">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img class="thumbnail" src="@employee.PhotoPath" alt="Employee Photo" />
+                            </td>
+                            <td>
+                                <table class="table table-borderless">
+                                    <tbody>                                    
+                                        <tr>
+                                            <td>First name:</td>
+                                            <td>@employee.FirstName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last name:</td>
+                                            <td>@employee.LastName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date of birth:</td>
+                                            <td>@employee.DateOfBirth.ToShortDateString()</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </td>
+            }
+        </RowTemplate>
+    </GridTemplates>
     <GridColumns>
-        <GridColumn IsPrimaryKey="true" Field="@nameof(Employee.EmployeeId)" TextAlign="TextAlign.Left" Width="60" HeaderText="Id"></GridColumn>
-        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Left" HeaderText="First Name" Width="100"></GridColumn>
-        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Left" HeaderText="Last Name" Width="100"></GridColumn>
-        <GridColumn Field="@nameof(Employee.DateOfBirth)" TextAlign="TextAlign.Left" HeaderText="Date of Birth" Width="110"></GridColumn>
-        <GridColumn Field="@nameof(Employee.Email)" TextAlign="TextAlign.Left" HeaderText="Email" Width="130"></GridColumn>
-        <GridColumn Field="@nameof(Employee.Gender)" TextAlign="TextAlign.Left" HeaderText="Email" Width="110"></GridColumn>
+        <GridColumn TextAlign="TextAlign.Center" Width="450" HeaderText="Magnus Specialists Tech Employees"></GridColumn>
     </GridColumns>
 </SfGrid>
 
+<h3 class="mt-5 mb-1"> Detail Template</h3>
+<div style="padding-bottom: 5px;">
+    <SfButton Content="@ToggleButtonContent" OnClick="@ToggleButtonClick"></SfButton>
+</div>
+<SfGrid @ref="EmployeeGrid" DataSource="@Employees" AllowTextWrap="true" Width="455">
+    <GridEvents TValue="Employee" DataBound="@DataBoundHandler"></GridEvents>
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var employee = context as Employee;
+                <td style="text-align: center;">
+                    <table width="100%" cellpadding="5">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img class="thumbnail" src="@employee.PhotoPath" alt="Employee Photo" />
+                                </td>
+                                <td>
+                                    <table class="table table-borderless">
+                                        <tbody>
+                                            <tr>
+                                                <td>First name:</td>
+                                                <td>@employee.FirstName</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Last name:</td>
+                                                <td>@employee.LastName</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date of birth:</td>
+                                                <td>@employee.DateOfBirth.ToShortDateString()</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            }
+        </DetailTemplate>
+    </GridTemplates>
+    <GridColumns>
+        <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" TextAlign="TextAlign.Center" Width="60" HeaderText="ID"></GridColumn>
+        <GridColumn Field="@nameof(Employee.FirstName)" TextAlign="TextAlign.Center" Width="100" HeaderText="First Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.LastName)" TextAlign="TextAlign.Center" Width="100" HeaderText="Last Name"></GridColumn>
+        <GridColumn Field="@nameof(Employee.DateOfBirth)" TextAlign="TextAlign.Center" Width="100" HeaderText="Date of Birth"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+<style type="text/css" class="cssStyles">
+    .thumbnail{
+        width: 150px;
+        height: 150px;
+        border-radius: 75px;
+    }
+</style>
+
 @code {
     public List<Employee> Employees { get; set; }
+
+    public SfGrid<Employee> EmployeeGrid { get; set; }
+
+    public string ToggleButtonContent { get; set; } = "Collapse All Detail Rows";
 
     [Inject]
     public IEmployeeService EmployeeService { get; set; }
@@ -19,5 +114,24 @@
     protected override async Task OnInitializedAsync()
     {
         Employees = (await EmployeeService.GetAllEmployees()).ToList();
+    }
+
+    public async void ToggleButtonClick()
+    {
+        if(ToggleButtonContent.StartsWith("Expand"))
+        {
+            DataBoundHandler();
+            ToggleButtonContent = "Collapse all rows";
+        }
+        else
+        {
+            await EmployeeGrid.CollapseAllDetailRowAsync();
+            ToggleButtonContent = "Expand all rows";
+        }
+    }
+
+    public async void DataBoundHandler()
+    {
+        await EmployeeGrid.ExpandAllDetailRowAsync();
     }
 }
