@@ -59,7 +59,7 @@
 </div>
 <SfGrid @ref="EmpGrid" DataSource="@Employees" Width="650" AllowReordering="true" AllowResizing="true" ShowColumnMenu="true" ColumnMenuItems="@MenuItems" AllowGrouping="true" AllowFiltering="true">
     <GridGroupSettings ShowGroupedColumn="true"></GridGroupSettings>
-    @* <GridFilterSettings Type="Syncfusion.Blazor.DropDowns.FilterType.CheckBox"></GridFilterSettings> *@
+        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.CheckBox"></GridFilterSettings>
     <GridColumns>
         <GridColumn Field="@nameof(Employee.EmployeeId)" IsPrimaryKey="true" HeaderText="ID" Width="60"></GridColumn>
         <GridColumn MinWidth="200" MaxWidth="300" Field="@nameof(Employee.FirstName)" IsPrimaryKey="true" HeaderText="First Name" Width="120"
